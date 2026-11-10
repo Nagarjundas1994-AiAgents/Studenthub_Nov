@@ -175,3 +175,22 @@ Accept: application/json
 
 GET {{service}}/Students(99999999-9999-4999-8999-999999999999)
 Accept: application/json
+
+
+
+### =====================================================
+### 16. DELETE STUDENT
+### Standard OData DELETE Endpoint
+### =====================================================
+
+DELETE {{service}}/Students({{studentId}})
+Accept: application/json
+
+
+### =====================================================
+### 17. VERIFY STUDENT DELETION
+### Expected: 404 Not Found
+### =====================================================
+
+GET {{service}}/Students({{studentId}})
+Accept: application/json

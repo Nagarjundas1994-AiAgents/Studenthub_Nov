@@ -1,12 +1,33 @@
 import cds from '@sap/cds';
 
 const { Students, Enrollments, Courses } = cds.entities('StudentService');
-
+const { SELECT, INSERT, UPDATE, DELETE } = cds.ql;
 
 export default class StudentService extends cds.ApplicationService {
     async init() {
 
+        this.on('deleteStudent', 'Students', async(req)=>
+        {
+            // Step 1: Get Student ID from URL
+            const { ID } = req.params[0];
 
+            // Step 2: Find student
+            const student = await SELECT.from(Students).where({ ID }).limit(1);
+
+            // Step 3: student present in database or not
+             if (!student) {
+                return req.reject(
+                    404,
+                    `Student with ID ${ID} not found`
+                )};
+
+            //Step 4: deleting the student from db
+            await DELETE.from(Students).where({ID});
+            
+            return true;
+            
+
+        });
         this.on('changeDepartment', 'Students', async (req) => {
 
             // Step 1: Get Student ID from URL
