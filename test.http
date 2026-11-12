@@ -5,7 +5,7 @@
 
 @baseUrl = http://localhost:4004
 @service = {{baseUrl}}/odata/v4/student
-@studentId = 88888888-8888-4888-8888-888888888888
+@studentId = 22222222-2222-4222-8222-222222222222
 
 ### =====================================================
 ### 1. GET ALL STUDENTS
@@ -133,12 +133,12 @@ Content-Type: application/json
 Accept: application/json
 
 {
-    "name": "Venkat",
-    "email": "Venkat@example.com",
+    "name": "Kaushal",
+    "email": "kaushal@example.com",
     "department": "MECH",
     "status": "Active",
-    "ID": "99999999-9999-56999-8966-999999999999",
-    "bpNumber": "1000000049"
+    "ID": "19999999-9999-56999-8946-999999999999",
+    "bpNumber": "1000000029"
 }
 
 
