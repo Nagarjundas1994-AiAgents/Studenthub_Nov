@@ -1,5 +1,6 @@
 using {studenthub_nov as DB} from '../db/schema';
 
+@requires: 'User'
 service StudentService {
   entity Students    as projection on DB.Student
     actions {
@@ -8,10 +9,12 @@ service StudentService {
       //bound function to read the information about enrolled courses for a student
       function getEnrolledCourses()                 returns array of Courses;
 
-      //convert the status of a student to graduated
-      action   graduateStudent()                    returns Students;
+      //covert the stautes of a student to graduated
+      @requires: ['Manager', 'Admin']
+      action   graduateStudent()                           returns Students;
 
       //delete a student
+      @requires: ['Admin']
       action   deleteStudent()                      returns Boolean;
 
       //enroll a student into a course

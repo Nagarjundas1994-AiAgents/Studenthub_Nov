@@ -1,6 +1,44 @@
 {
-  "scopes": [],
-  "attributes": [],
-  "role-templates": [],
-  "authorities-inheritance": false
+  "xsappname": "StudentHub_Nov",
+  "tenant-mode": "dedicated",
+  "scopes": [
+    {
+      "name": "xsappname.User","description": "Scope for StudentHub_Nov User"
+    },
+   
+    {
+      "name":"xsappname.Manager","description":"Scope for StudentHub_Nov Manager"
+    },
+
+     {
+      "name": "xsappname.Admin","description": "Scope for StudentHub_Nov Admin"
+    }
+  ],
+
+  "role-templates": [
+
+    {
+      "name": "User",
+      "description": "Role for StudentHub_Nov User",
+      "scope-references": [
+        "xsappname.User"
+      ]
+    },
+    {
+      "name": "Manager",
+      "description": "Role for StudentHub_Nov Manager",
+      "scope-references": [
+        "xsappname.Manager","xsappname.User"
+      ]
+    },
+    {
+      "name": "Admin",
+      "description": "Role for StudentHub_Nov Admin",
+      "scope-references": [
+        "xsappname.Admin","xsappname.Manager","xsappname.User"
+      ]
+    }
+  ],
+  "authorities-inheritance": false,
+  "attributes": []
 }

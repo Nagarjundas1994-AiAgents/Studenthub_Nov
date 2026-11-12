@@ -17,9 +17,40 @@
   "private": true,
   "cds": {
     "requires": {
-      "[production]": {
-        "auth": "xsuaa"
+      "[development]": {
+        "auth": {
+        "kind": "mocked",
+        "users":{
+          "Nagarjuna": {
+            "password": "Nagarjuna",
+            "roles": [
+              "Admin"
+            ]
+          },
+          "Kaushal": {
+            "password": "Kaushal",
+            "roles": [
+              "Manager"
+            ]
+          },
+          "Venkat": {
+            "password": "Venkat",
+            "roles": [
+              "User"
+            ]
+          },
+          "David": {
+            "password": "David",
+            "roles": [
+              "User"
+            ]
+          }
+        }
+        
+      }
       },
+
+  
       "destinations": true
     }
   }
