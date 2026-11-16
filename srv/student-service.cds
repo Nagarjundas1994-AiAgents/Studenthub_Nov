@@ -1,6 +1,6 @@
 using {studenthub_nov as DB} from '../db/schema';
 
-@requires: 'User'
+@requires: ['User', 'Manager', 'Admin']
 service StudentService {
   entity Students    as projection on DB.Student
     actions {
@@ -34,9 +34,30 @@ service StudentService {
     }
 
 
+@restrict:[
+  {
+    grant: 'READ',
+    to: ['User']
+  },{
+
+    grant: '*',
+    to: ['Admin']
+  }
+]
   entity Enrollments as projection on DB.Enrollments;
 
 
+
+@restrict:[
+  {
+    grant: 'READ',
+    to: ['User']
+  },{
+
+    grant: '*',
+    to: ['Admin']
+  }
+]
   entity Courses     as projection on DB.Course;
 
 //unbound actions to create and update a student
