@@ -2,6 +2,17 @@ using {studenthub_nov as DB} from '../db/schema';
 
 @requires: ['User', 'Manager', 'Admin']
 service StudentService {
+
+  @restrict:[
+    {
+      grant: ['READ', 'getAverageCredits'],
+      to: ['User']
+    },{
+
+      grant: '*',
+      to: ['Admin']
+    }
+  ]
   entity Students    as projection on DB.Student
     actions {
       action   changeDepartment(Department: String) returns Students;
@@ -36,7 +47,7 @@ service StudentService {
 
 @restrict:[
   {
-    grant: 'READ',
+    grant: ['READ', 'UPDATE'],
     to: ['User']
   },{
 
