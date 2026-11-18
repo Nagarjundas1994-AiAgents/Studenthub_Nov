@@ -1,9 +1,9 @@
-using {API_BUSINESS_PARTNER as externals4} from './external/API_BUSINESS_PARTNER';
+using {API_BUSINESS_PARTNER as externals4david} from './external/API_BUSINESS_PARTNER';
 
-service S4Service {
+service DavidS4Service {
 
-  entity BusinessPartners as projection on externals4.A_BusinessPartner
+  entity DavidBusinessPartners as projection on externals4david.A_BusinessPartner
     actions {
-      action getBusinessPartnerDetails(BusinessPartner: String) returns BusinessPartners;
+      action getBusinessPartnerDetails(BusinessPartner: String) returns DavidBusinessPartners;
     }
 }
