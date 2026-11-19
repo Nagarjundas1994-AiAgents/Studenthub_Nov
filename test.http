@@ -9,6 +9,12 @@
 @studentId2 = 11111111-1111-4111-8111-111111111111
 @createdStudentId = bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb
 
+@davidService = {{baseUrl}}/odata/v4/david-s4
+@bpId = 1000000049
+@bpIdNotFound = 9999999999
+@bpUUID = fa163e6c-c3e1-1eec-97b1-41014faf9a05
+@bpUUIDNotFound = 00000000-0000-0000-0000-000000000000
+
 ### =====================================================
 ### 1. GET ALL STUDENTS
 ### =====================================================
@@ -354,3 +360,303 @@ Accept: application/json
     "ID": "{{studentId2}}"
 }
 
+
+### =====================================================
+### =====================================================
+### DAVID S4 SERVICE (S/4HANA BUSINESS PARTNERS)
+### =====================================================
+### =====================================================
+
+
+### =====================================================
+### 32. GET ALL BUSINESS PARTNERS
+### Read forwarded to S/4
+### =====================================================
+
+GET {{davidService}}/DavidBusinessPartners
+Accept: application/json
+
+
+### =====================================================
+### 33. GET BUSINESS PARTNERS WITH $top AND $select
+### =====================================================
+
+GET {{davidService}}/DavidBusinessPartners?$top=5&$select=BusinessPartner,BusinessPartnerFullName
+Accept: application/json
+
+
+### =====================================================
+### 34. GET A SPECIFIC BUSINESS PARTNER
+### =====================================================
+
+GET {{davidService}}/DavidBusinessPartners('{{bpId}}')
+Accept: application/json
+
+
+### =====================================================
+### 35. GET BUSINESS PARTNER DETAILS
+### Bound Action
+### =====================================================
+
+POST {{davidService}}/DavidBusinessPartners('{{bpId}}')/DavidS4Service.getBusinessPartnerDetails
+Content-Type: application/json
+Accept: application/json
+
+{
+    "BusinessPartner": "{{bpId}}"
+}
+
+
+### =====================================================
+### 36. GET BUSINESS PARTNER DETAILS - MISSING BusinessPartner
+### Expected: 400 Bad Request
+### =====================================================
+
+POST {{davidService}}/DavidBusinessPartners('{{bpId}}')/DavidS4Service.getBusinessPartnerDetails
+Content-Type: application/json
+Accept: application/json
+
+{}
+
+
+### =====================================================
+### 37. GET BUSINESS PARTNER DETAILS - NOT FOUND
+### Expected: 404 Not Found
+### =====================================================
+
+POST {{davidService}}/DavidBusinessPartners('{{bpId}}')/DavidS4Service.getBusinessPartnerDetails
+Content-Type: application/json
+Accept: application/json
+
+{
+    "BusinessPartner": "{{bpIdNotFound}}"
+}
+
+
+### =====================================================
+### 38. CHECK BUSINESS PARTNER EXISTS
+### Bound Action
+### Expected: true
+### =====================================================
+
+POST {{davidService}}/DavidBusinessPartners('{{bpId}}')/DavidS4Service.checkBusinessPartnerExists
+Content-Type: application/json
+Accept: application/json
+
+{
+    "BusinessPartner": "{{bpId}}"
+}
+
+
+### =====================================================
+### 39. CHECK BUSINESS PARTNER EXISTS - NOT FOUND
+### Bound Action
+### Expected: false
+### =====================================================
+
+POST {{davidService}}/DavidBusinessPartners('{{bpId}}')/DavidS4Service.checkBusinessPartnerExists
+Content-Type: application/json
+Accept: application/json
+
+{
+    "BusinessPartner": "{{bpIdNotFound}}"
+}
+
+
+### =====================================================
+### 40. CHECK BUSINESS PARTNER EXISTS - MISSING BusinessPartner
+### Expected: 400 Bad Request
+### =====================================================
+
+POST {{davidService}}/DavidBusinessPartners('{{bpId}}')/DavidS4Service.checkBusinessPartnerExists
+Content-Type: application/json
+Accept: application/json
+
+{}
+
+
+### =====================================================
+### 41. GET BUSINESS PARTNER NAME
+### Bound Action
+### =====================================================
+
+POST {{davidService}}/DavidBusinessPartners('{{bpId}}')/DavidS4Service.getBusinessPartnerName
+Content-Type: application/json
+Accept: application/json
+
+{
+    "BusinessPartner": "{{bpId}}"
+}
+
+
+### =====================================================
+### 42. GET BUSINESS PARTNER NAME - NOT FOUND
+### Expected: 404 Not Found
+### =====================================================
+
+POST {{davidService}}/DavidBusinessPartners('{{bpId}}')/DavidS4Service.getBusinessPartnerName
+Content-Type: application/json
+Accept: application/json
+
+{
+    "BusinessPartner": "{{bpIdNotFound}}"
+}
+
+
+### =====================================================
+### 43. SEARCH BUSINESS PARTNERS BY NAME
+### Unbound Action
+### Note: S/4 matching is case-sensitive
+### =====================================================
+
+POST {{davidService}}/searchBusinessPartnersByName
+Content-Type: application/json
+Accept: application/json
+
+{
+    "name": "Smith"
+}
+
+
+### =====================================================
+### 44. SEARCH BUSINESS PARTNERS - MISSING name
+### Expected: 400 Bad Request
+### =====================================================
+
+POST {{davidService}}/searchBusinessPartnersByName
+Content-Type: application/json
+Accept: application/json
+
+{}
+
+
+### =====================================================
+### 45. GET BUSINESS PARTNERS BY CATEGORY - PERSON
+### Unbound Action
+### =====================================================
+
+POST {{davidService}}/getBusinessPartnersByCategory
+Content-Type: application/json
+Accept: application/json
+
+{
+    "category": "1"
+}
+
+
+### =====================================================
+### 46. GET BUSINESS PARTNERS BY CATEGORY - ORGANIZATION
+### Unbound Action
+### =====================================================
+
+POST {{davidService}}/getBusinessPartnersByCategory
+Content-Type: application/json
+Accept: application/json
+
+{
+    "category": "2"
+}
+
+
+### =====================================================
+### 47. GET BUSINESS PARTNERS BY CATEGORY - INVALID
+### Expected: 400 Bad Request
+### =====================================================
+
+POST {{davidService}}/getBusinessPartnersByCategory
+Content-Type: application/json
+Accept: application/json
+
+{
+    "category": "9"
+}
+
+
+### =====================================================
+### 48. GET LATEST BUSINESS PARTNERS
+### Unbound Action
+### Expected: 5 results
+### =====================================================
+
+POST {{davidService}}/getLatestBusinessPartners
+Content-Type: application/json
+Accept: application/json
+
+{
+    "count": 5
+}
+
+
+### =====================================================
+### 49. GET LATEST BUSINESS PARTNERS - DEFAULT COUNT
+### Expected: 10 results
+### =====================================================
+
+POST {{davidService}}/getLatestBusinessPartners
+Content-Type: application/json
+Accept: application/json
+
+{}
+
+
+### =====================================================
+### 50. GET LATEST BUSINESS PARTNERS - COUNT ABOVE LIMIT
+### Expected: capped at 50 results
+### =====================================================
+
+POST {{davidService}}/getLatestBusinessPartners
+Content-Type: application/json
+Accept: application/json
+
+{
+    "count": 500
+}
+
+
+### =====================================================
+### 51. FILTER BY BusinessPartnerUUID
+### Normal $filter, forwarded to S/4
+### =====================================================
+
+GET {{davidService}}/DavidBusinessPartners?$filter=BusinessPartnerUUID eq {{bpUUID}}
+Accept: application/json
+
+
+### =====================================================
+### 52. GET BUSINESS PARTNER BY UUID
+### Unbound Action
+### =====================================================
+
+POST {{davidService}}/getBusinessPartnerByUUID
+Content-Type: application/json
+Accept: application/json
+
+{
+    "BusinessPartnerUUID": "{{bpUUID}}"
+}
+
+
+### =====================================================
+### 53. GET BUSINESS PARTNER BY UUID - NOT FOUND
+### Expected: 404 Not Found
+### =====================================================
+
+POST {{davidService}}/getBusinessPartnerByUUID
+Content-Type: application/json
+Accept: application/json
+
+{
+    "BusinessPartnerUUID": "{{bpUUIDNotFound}}"
+}
+
+
+### =====================================================
+### 54. GET BUSINESS PARTNER BY UUID - MISSING UUID
+### Expected: 400 Bad Request
+### =====================================================
+
+POST {{davidService}}/getBusinessPartnerByUUID
+Content-Type: application/json
+Accept: application/json
+
+{}
